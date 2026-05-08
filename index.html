@@ -11,36 +11,72 @@
   <!-- Theme color for browser UI -->
   <meta name="theme-color" content="#4CAF50">
 
+  <!-- Popup + overlay styling -->
   <style>
+    /* Backdrop overlay */
+    #install-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+
+    /* Popup container */
     #install-banner {
       display: none;
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #333;
-      color: #fff;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      color: #333;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      text-align: center;
+      width: 420px;
+      max-width: 90%;
+      font-family: system-ui, sans-serif;
+      z-index: 1000;
     }
-    #install-banner p { margin: 0 0 10px 0; }
+
+    #install-banner h2 {
+      margin-top: 0;
+      font-size: 1.5em;
+      color: #4CAF50;
+    }
+
+    #install-banner p {
+      margin: 15px 0;
+      font-size: 1.1em;
+    }
+
     #install-button {
       background: #4CAF50;
       color: #fff;
       border: none;
-      padding: 8px 12px;
-      border-radius: 4px;
+      padding: 12px 20px;
+      border-radius: 6px;
       cursor: pointer;
+      font-size: 1em;
+      transition: background 0.3s ease;
+    }
+
+    #install-button:hover {
+      background: #45a049;
     }
   </style>
 </head>
 <body>
-  <h1>Welcome to Your App</h1>
+  <h1>Welcome to DPS Dashboard</h1>
   <p>This is the PWA wrapper for your Rewst app.</p>
 
-  <!-- Custom install banner -->
+  <!-- Overlay + Popup -->
+  <div id="install-overlay"></div>
   <div id="install-banner">
-    <p>📲 Install our app for the best experience!</p>
+    <h2>📲 Install DPS Dashboard</h2>
+    <p>Add our app to your device for the best experience.</p>
     <button id="install-button">Install Now</button>
   </div>
 
@@ -52,30 +88,37 @@
         .catch(err => console.error("SW registration failed", err));
     }
 
-    // Custom install prompt
     let deferredPrompt;
+    const overlay = document.getElementById("install-overlay");
+    const banner = document.getElementById("install-banner");
+
+    // Listen for install prompt
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      document.getElementById("install-banner").style.display = "block";
+      overlay.style.display = "block";
+      banner.style.display = "block";
+    });
 
-      document.getElementById("install-button").addEventListener("click", () => {
-        document.getElementById("install-banner").style.display = "none";
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(() => {
-          // After user accepts or dismisses, redirect to Rewst
-          window.location.href = "https://dpsolutions-company-systems-dashboard.rew.st/s/home";
-          deferredPrompt = null;
-        });
+    // Handle install button click
+    document.getElementById("install-button").addEventListener("click", () => {
+      overlay.style.display = "none";
+      banner.style.display = "none";
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => {
+        window.location.href = "https://dpsolutions-company-systems-dashboard.rew.st/s/home";
+        deferredPrompt = null;
       });
     });
 
-    // Optional: if no install prompt fires, redirect after a delay
+    // Optional: fallback redirect if no prompt fires
     setTimeout(() => {
       if (!deferredPrompt) {
+        overlay.style.display = "none";
+        banner.style.display = "none";
         window.location.href = "https://dpsolutions-company-systems-dashboard.rew.st/s/home";
       }
-    }, 5000); // adjust delay as needed
+    }, 5000);
   </script>
 </body>
 </html>
