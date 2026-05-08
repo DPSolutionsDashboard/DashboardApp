@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DPS Systems Dashboard</title>
+
+  <!-- Link to manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Theme color for browser UI -->
+  <meta name="theme-color" content="#4CAF50">
+
+  <!-- Basic styling -->
+  <style>
+    #install-banner {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #333;
+      color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    #install-banner p {
+      margin: 0 0 10px 0;
+    }
+    #install-button {
+      background: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to Your App</h1>
+  <p>This is the PWA wrapper for your Rewst app.</p>
+
+  <!-- Custom install banner -->
+  <div id="install-banner">
+    <p>📲 Install our app for the best experience!</p>
+    <button id="install-button">Install Now</button>
+  </div>
+
+  <!-- Register service worker + install prompt -->
+  <script>
+    // Register service worker
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js")
+        .then(() => console.log("Service Worker registered"));
+    }
+
+    // Custom install prompt
+    let deferredPrompt;
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById("install-banner").style.display = "block";
+
+      document.getElementById("install-button").addEventListener("click", () => {
+        document.getElementById("install-banner").style.display = "none";
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === "accepted") {
+            console.log("User accepted the install prompt");
+          } else {
+            console.log("User dismissed the install prompt");
+          }
+          deferredPrompt = null;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
