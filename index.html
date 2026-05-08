@@ -11,7 +11,6 @@
   <!-- Theme color for browser UI -->
   <meta name="theme-color" content="#4CAF50">
 
-  <!-- Popup + overlay styling -->
   <style>
     /* Backdrop overlay */
     #install-overlay {
@@ -69,8 +68,11 @@
   </style>
 </head>
 <body>
-  <h1>Welcome to DPS Dashboard</h1>
-  <p>This is the PWA wrapper for your Rewst app.</p>
+  <!-- Wrapper content only shown if not installed -->
+  <div id="wrapper">
+    <h1>Welcome to DPS Dashboard</h1>
+    <p>This is the PWA wrapper for your Rewst app.</p>
+  </div>
 
   <!-- Overlay + Popup -->
   <div id="install-overlay"></div>
@@ -81,6 +83,12 @@
   </div>
 
   <script>
+    // If already installed, skip wrapper and go straight to dashboard
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      document.getElementById("wrapper").style.display = "none";
+      window.location.replace("https://dpsolutions-company-systems-dashboard.rew.st/s/home");
+    }
+
     // Register service worker
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("service-worker.js")
@@ -113,7 +121,7 @@
 
     // Optional: fallback redirect if no prompt fires
     setTimeout(() => {
-      if (!deferredPrompt) {
+      if (!deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) {
         overlay.style.display = "none";
         banner.style.display = "none";
         window.location.href = "https://dpsolutions-company-systems-dashboard.rew.st/s/home";
