@@ -1,11 +1,13 @@
 {
-  "name": "DPS Systems Dashboard",
-  "short_name": "DPSDashboard",
+  "name": "DPSDashboard",
+  "short_name": "Dashboard",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#4CAF50",
-  "description": "A short description of your app.",
+  "theme_color": "#0d47a1",
+  "orientation": "any",
+  "id": "https://dpsolutionsdashboard.github.io/DashboardApp",
+  "categories": ["productivity", "business"],
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -15,6 +17,18 @@
     {
       "src": "icons/icon-512.png",
       "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/screen1.png",
+      "sizes": "640x480",
+      "type": "image/png"
+    },
+    {
+      "src": "screenshots/screen2.png",
+      "sizes": "640x480",
       "type": "image/png"
     }
   ]
