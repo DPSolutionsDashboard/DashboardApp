@@ -11,7 +11,6 @@
   <!-- Theme color for browser UI -->
   <meta name="theme-color" content="#4CAF50">
 
-  <!-- Basic styling -->
   <style>
     #install-banner {
       display: none;
@@ -24,9 +23,7 @@
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
-    #install-banner p {
-      margin: 0 0 10px 0;
-    }
+    #install-banner p { margin: 0 0 10px 0; }
     #install-button {
       background: #4CAF50;
       color: #fff;
@@ -47,12 +44,12 @@
     <button id="install-button">Install Now</button>
   </div>
 
-  <!-- Register service worker + install prompt -->
   <script>
     // Register service worker
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("service-worker.js")
-        .then(() => console.log("Service Worker registered"));
+        .then(() => console.log("Service Worker registered"))
+        .catch(err => console.error("SW registration failed", err));
     }
 
     // Custom install prompt
@@ -65,19 +62,20 @@
       document.getElementById("install-button").addEventListener("click", () => {
         document.getElementById("install-banner").style.display = "none";
         deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === "accepted") {
-            console.log("User accepted the install prompt");
-          } else {
-            console.log("User dismissed the install prompt");
-          }
+        deferredPrompt.userChoice.then(() => {
+          // After user accepts or dismisses, redirect to Rewst
+          window.location.href = "https://dpsolutions-company-systems-dashboard.rew.st/s/home";
           deferredPrompt = null;
         });
       });
     });
-	
-	window.location.href = "https://dpsolutions-company-systems-dashboard.rew.st/s/home";
-	
+
+    // Optional: if no install prompt fires, redirect after a delay
+    setTimeout(() => {
+      if (!deferredPrompt) {
+        window.location.href = "https://dpsolutions-company-systems-dashboard.rew.st/s/home";
+      }
+    }, 5000); // adjust delay as needed
   </script>
 </body>
 </html>
