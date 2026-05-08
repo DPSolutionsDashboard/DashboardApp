@@ -7,7 +7,7 @@
   "theme_color": "#0d47a1",
   "orientation": "any",
   "id": "https://dpsolutionsdashboard.github.io/DashboardApp",
-  "description": "DPSDashboard helps track and visualize solutions in a simple, installable web app."
+  "description": "DPSDashboard helps track and visualize solutions in a simple, installable web app.",
   "categories": ["productivity", "business"],
   "icons": [
     {
